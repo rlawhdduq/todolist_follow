@@ -1,7 +1,6 @@
 package todolist.follow.service;
 
 import todolist.follow.dto.redis.FollowListDto;
-
 public interface FollowService {
 
     void insertFollowing();                 // 친구 등록

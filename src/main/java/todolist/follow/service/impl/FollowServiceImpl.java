@@ -3,9 +3,15 @@ package todolist.follow.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import reactor.core.publisher.Mono;
 import todolist.follow.dto.redis.FollowListDto;
 import todolist.follow.repository.FollowRepository;
 import todolist.follow.service.FollowService;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 @Service
@@ -29,10 +35,12 @@ public class FollowServiceImpl implements FollowService{
     @Override 
     public FollowListDto getFollowing(Long user_id)
     {
-        FollowListDto redisDto = new FollowListDto();
-        redisDto.setUser_id(user_id);
-        redisDto.setUserList(followRepository.getFollowing(user_id));
-        return redisDto;
+        FollowListDto followListDto = new FollowListDto();
+        
+        followListDto.setUser_id(user_id);
+        followListDto.setUserList(followRepository.getFollowing(user_id));
+
+        return followListDto;
     }
 
 }

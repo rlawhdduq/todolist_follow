@@ -1,5 +1,7 @@
 package todolist.follow.api;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +14,17 @@ import todolist.follow.dto.FollowDto;
 import todolist.follow.dto.redis.FollowListDto;
 import todolist.follow.service.FollowService;
 
+import java.util.List;
+import java.util.Map;
+import reactor.core.publisher.Mono;
+
 @RestController
 public class FollowApi {
 
     @Autowired
     private FollowService followService;
-    
+    private static final Logger log = LoggerFactory.getLogger(FollowApi.class);
+
     @PostMapping("/api/follow")
     public void postMethodName(@RequestBody FollowDto followDto)
     {
@@ -33,8 +40,9 @@ public class FollowApi {
     @GetMapping("/api/follow/{user_id}")
     public FollowListDto getMethodName(@PathVariable Long user_id)
     {
-        FollowListDto followListDto = followService.getFollowing(user_id);
-        return followListDto;
+        FollowListDto followList = followService.getFollowing(user_id);
+        
+        return followList;
     }
 
 }
