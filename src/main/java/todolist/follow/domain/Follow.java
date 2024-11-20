@@ -31,10 +31,10 @@ public class Follow {
     @Column(insertable = false, updatable = true)
     private Character follow_status;
 
-    @Column(insertable = false, updatable = true)
+    @Column(insertable = false, updatable = false)
     private LocalDateTime following_create_time;
 
-    @Column(insertable = false, updatable = true)
+    @Column(insertable = false, updatable = false)
     private Character status;
 
     @Column(insertable = false, updatable = true)

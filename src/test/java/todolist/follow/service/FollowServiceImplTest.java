@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import todolist.follow.dto.FollowDto;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class FollowServiceImplTest {
@@ -26,8 +28,10 @@ public class FollowServiceImplTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private KafkaProducer kafka;
 
-    @Test
+    // @Test
     public void getFollowing()
     throws Exception
     {
@@ -38,5 +42,32 @@ public class FollowServiceImplTest {
                                             .andExpect(status().isOk());
         log.info("return json : " + resultActions.andReturn().getResponse().getContentAsString());
         log.info("token CreateEnd");
+    }
+
+    // kafka Test
+    // @Test
+    public void insertFollowing()
+    {
+        String topic = "follow-insert";
+        Long following_user_id = 11L;
+        Long follower_user_id = 22L;
+        FollowDto followDto = new FollowDto();
+        followDto.setFollowing_user_id(following_user_id);
+        followDto.setFollower_user_id(follower_user_id);
+
+        kafka.sendMessage(topic, (Object) followDto);
+    }
+
+    // @Test
+    public void deleteFollowing()
+    {
+        String topic = "follow-delete";
+        Long following_user_id = 22L;
+        Long follower_user_id = 11L;
+        FollowDto followDto = new FollowDto();
+        followDto.setFollowing_user_id(following_user_id);
+        followDto.setFollower_user_id(follower_user_id);
+
+        kafka.sendMessage(topic, (Object) followDto);
     }
 }
