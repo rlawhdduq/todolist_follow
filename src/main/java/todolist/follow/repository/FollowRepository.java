@@ -15,8 +15,9 @@ import todolist.follow.domain.Follow;
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long>{
 
-    @Query("Select following_user_id From Follow Where follower_user_id = :user_id and status = 'Y' ")
-    List<Long> getFollowing(@Param("user_id") Long user_id);
+    @Query("Select following_user_id From Follow Where follower_user_id = :user_id and follow_status = :follow_status and status = 'Y' ")
+    List<Long> getFollowing(@Param("user_id") Long user_id, @Param("follow_status") Character follow_status);
+    
 
     @Modifying
     @Query(value = "Delete From follow Where following_user_id = :following_user_id and follower_user_id = :follower_user_id", nativeQuery = true)

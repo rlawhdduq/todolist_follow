@@ -1,11 +1,13 @@
 package todolist.follow.service;
 
-import org.springframework.kafka.support.Acknowledgment;
+import java.util.Map;
 
 import todolist.follow.dto.FollowDto;
-import todolist.follow.dto.redis.FollowListDto;
+
 public interface FollowService {
 
-    FollowListDto getFollowing(Long user_id);    // 친구 조회
+    void insert(FollowDto followDto);
+    void delete(FollowDto followDto);
+    Map<String, Object> getFollowing(Long user_id);    // 친구 조회
     
 }

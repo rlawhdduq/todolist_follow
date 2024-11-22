@@ -14,6 +14,11 @@ import todolist.follow.repository.FollowRepository;
 import todolist.follow.service.FollowService;
 import todolist.follow.service.KafkaProducer;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +31,19 @@ public class FollowServiceImpl implements FollowService{
     private FollowRepository followRepository;
     @Autowired
     private KafkaProducer kafka;
+
+    @Override
+    public void insert(FollowDto followDto)
+    {
+        System.out.println("FollowService 들어옴");
+        callKafka("follow-insert", (Object) followDto);
+        System.out.println("FollowService 나감");
+    }
+    @Override
+    public void delete(FollowDto followDto)
+    {
+        callKafka("follow-delete", (Object) followDto);
+    }
 
     @KafkaListener
     (
@@ -83,17 +101,22 @@ public class FollowServiceImpl implements FollowService{
     }
 
     @Override 
-    public FollowListDto getFollowing(Long user_id)
+    public Map<String, Object> getFollowing(Long user_id)
     {
-        FollowListDto followListDto = new FollowListDto();
+        Map<String, Object> followList = new HashMap<>();
+        followList.put("A", followRepository.getFollowing(user_id, 'A'));
+        followList.put("F", followRepository.getFollowing(user_id, 'Y'));
         
-        followListDto.setUser_id(user_id);
-        followListDto.setUserList(followRepository.getFollowing(user_id));
-
-        return followListDto;
+        return followList;
     }
 
     // Private Method
+    private void callKafka(String topic, Object dto)
+    {
+        System.out.println("Kafka 들어옴");
+        kafka.sendMessage(topic, dto);
+        System.out.println("Kafka 나감");
+    }
     @Transactional(propagation = Propagation.REQUIRED)
     private void repoIns(Follow follow)
     {
