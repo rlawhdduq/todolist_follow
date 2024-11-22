@@ -10,8 +10,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
+
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +46,26 @@ public class FollowServiceImplTest {
                                             .andExpect(status().isOk());
         log.info("return json : " + resultActions.andReturn().getResponse().getContentAsString());
         log.info("token CreateEnd");
+    }
+    @Test
+    public void insertFollow()
+    throws Exception
+    {
+        log.info("테스트 코드 시작");
+        List<Long> arr = java.util.Arrays.asList(7777L, 594201L, 5358L, 113729L, 3729L);
+        FollowDto followDto = new FollowDto();
+        followDto.setFollower_user_id(7777L);
+        followDto.setFollowing_user_id(100L);
+        String insertBoardRequest = objectMapper.writeValueAsString(followDto);
+
+        ResultActions result = mockMvc.perform(post("/api/follow").contentType(MediaType.APPLICATION_JSON).content(insertBoardRequest));
+        // log.info("결과 : " + result.andExpect(status().isCreated()));
+        // for(Long follower_user_id : arr)
+        // {
+        //     log.info("포문 들어왔나?");
+        //     log.info("포문 끝났나?");
+        // }
+        log.info("테스트 코드 종료");
     }
 
     // kafka Test
