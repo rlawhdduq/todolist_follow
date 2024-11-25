@@ -32,7 +32,7 @@ public class FollowApi {
         return followList;
     }
 
-    @PostMapping("/api/ffff")
+    @PostMapping("/api/follow")
     public void insertFollow(@RequestBody FollowDto followDto) {
         followService.insert(followDto);
         return;
