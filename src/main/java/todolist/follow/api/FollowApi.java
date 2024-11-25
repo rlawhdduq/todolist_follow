@@ -24,10 +24,10 @@ public class FollowApi {
     @Autowired
     private final FollowService followService;
 
-    @GetMapping("/api/follow")
-    public Map<String, Object> getFollow(@RequestBody FollowDto followDto)
+    @GetMapping("/api/follow/{user_id}")
+    public Map<String, Object> getFollow(@PathVariable Long user_id)
     {
-        Map<String, Object> followList = followService.getFollowing(followDto.getFollower_user_id());
+        Map<String, Object> followList = followService.getFollowing(user_id);
         
         return followList;
     }
