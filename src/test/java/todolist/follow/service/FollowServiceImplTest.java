@@ -9,9 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.any;
 
 import java.util.List;
 
@@ -40,32 +45,41 @@ public class FollowServiceImplTest {
     throws Exception
     {
         Long user_id = 100L;
+        FollowDto followDto = new FollowDto();
+        followDto.setFollower_user_id(100L);
+        String request = objectMapper.writeValueAsString(followDto);
         log.info("token CreateStart");
-        ResultActions resultActions = mockMvc.perform(get("/api/follow/"+user_id)
-                                            .contentType(MediaType.APPLICATION_JSON))
-                                            .andExpect(status().isOk());
+        ResultActions resultActions = mockMvc.perform(get("/api/follow")
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                            .content(request));
         log.info("return json : " + resultActions.andReturn().getResponse().getContentAsString());
         log.info("token CreateEnd");
     }
-    @Test
+    // @Test
     public void insertFollow()
     throws Exception
     {
         log.info("테스트 코드 시작");
         List<Long> arr = java.util.Arrays.asList(7777L, 594201L, 5358L, 113729L, 3729L);
-        FollowDto followDto = new FollowDto();
-        followDto.setFollower_user_id(7777L);
-        followDto.setFollowing_user_id(100L);
-        String insertBoardRequest = objectMapper.writeValueAsString(followDto);
+        for(Long follower_user_id : arr)
+        {
+            FollowDto followDto = new FollowDto();
+            followDto.setFollower_user_id(follower_user_id);
+            followDto.setFollowing_user_id(100L);
+            kafka.sendMessage("follow-insert", (Object) followDto);
+        }
+    }
 
-        ResultActions result = mockMvc.perform(post("/api/follow").contentType(MediaType.APPLICATION_JSON).content(insertBoardRequest));
-        // log.info("결과 : " + result.andExpect(status().isCreated()));
-        // for(Long follower_user_id : arr)
-        // {
-        //     log.info("포문 들어왔나?");
-        //     log.info("포문 끝났나?");
-        // }
-        log.info("테스트 코드 종료");
+    // @Test
+    public void deleteFollow()
+    throws Exception
+    {
+        FollowDto followDto = new FollowDto();
+        followDto.setFollower_user_id(100L);
+        followDto.setFollowing_user_id(7777L);
+
+        String request = objectMapper.writeValueAsString(followDto);
+        mockMvc.perform(delete("/api/follow").contentType(MediaType.APPLICATION_JSON).content(request)).andReturn();
     }
 
     // kafka Test

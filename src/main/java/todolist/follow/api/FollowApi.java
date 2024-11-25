@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
 import todolist.follow.dto.FollowDto;
 import todolist.follow.service.FollowService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,25 +18,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
+@RequiredArgsConstructor
 public class FollowApi {
 
     @Autowired
-    private FollowService followService;
-    private static final Logger log = LoggerFactory.getLogger(FollowApi.class);
+    private final FollowService followService;
 
-    @GetMapping("/api/follow/{user_id}")
-    public Map<String, Object> getFollow(@PathVariable Long user_id)
+    @GetMapping("/api/follow")
+    public Map<String, Object> getFollow(@RequestBody FollowDto followDto)
     {
-        Map<String, Object> followList = followService.getFollowing(user_id);
+        Map<String, Object> followList = followService.getFollowing(followDto.getFollower_user_id());
         
         return followList;
     }
 
-    @PostMapping("/api/follow")
+    @PostMapping("/api/ffff")
     public void insertFollow(@RequestBody FollowDto followDto) {
-        System.out.println("FollowApi 들어옴");
         followService.insert(followDto);
-        System.out.println("FollowApi 나감");
         return;
     }
     

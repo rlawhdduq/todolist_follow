@@ -35,9 +35,9 @@ public class FollowServiceImpl implements FollowService{
     @Override
     public void insert(FollowDto followDto)
     {
-        System.out.println("FollowService 들어옴");
+        log.info("FollowService 들어옴");
         callKafka("follow-insert", (Object) followDto);
-        System.out.println("FollowService 나감");
+        log.info("FollowService 나감");
     }
     @Override
     public void delete(FollowDto followDto)
@@ -113,9 +113,9 @@ public class FollowServiceImpl implements FollowService{
     // Private Method
     private void callKafka(String topic, Object dto)
     {
-        System.out.println("Kafka 들어옴");
+        log.info("Kafka 들어옴");
         kafka.sendMessage(topic, dto);
-        System.out.println("Kafka 나감");
+        log.info("Kafka 나감");
     }
     @Transactional(propagation = Propagation.REQUIRED)
     private void repoIns(Follow follow)
