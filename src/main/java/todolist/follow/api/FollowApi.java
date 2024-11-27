@@ -15,6 +15,7 @@ import todolist.follow.dto.FollowDto;
 import todolist.follow.service.FollowService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -24,8 +25,8 @@ public class FollowApi {
     @Autowired
     private final FollowService followService;
 
-    @GetMapping("/api/follow/{user_id}")
-    public Map<String, Object> getFollow(@PathVariable Long user_id)
+    @GetMapping("/api/follow")
+    public Map<String, Object> getFollow(@RequestParam Long user_id)
     {
         Map<String, Object> followList = followService.getFollowing(user_id);
         
