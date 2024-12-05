@@ -40,12 +40,13 @@ public class GlobalExceptionHandler {
     private void logPrinter(String logType, Exception ex)
     {
         log.info(logType);
-        for( StackTraceElement element : ex.getStackTrace() )
-        {
-            log.info("Class : " + element.getClassName());
-            log.info("Method : " + element.getMethodName());
-            log.info("Line : " + element.getLineNumber());
-        }
+        log.error("Error occurred", ex);
+        // for( StackTraceElement element : ex.getStackTrace() )
+        // {
+        //     log.info("Class : " + element.getClassName());
+        //     log.info("Method : " + element.getMethodName());
+        //     log.info("Line : " + element.getLineNumber());
+        // }
     }
     
     @ExceptionHandler(Exception.class)
