@@ -34,21 +34,17 @@ jobs:
             chmod 600 private_key.pem
             scp -o StrictHostKeyChecking=no -i private_key.pem -P 2222 $GITHUB_WORKSPACE/build/libs/*.jar ubuntukjy@${{ secrets.HOST_IP }}:/spring/docker/compose/follow/jar
             
-      # - name: Set SSH ssh-action
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.HOST_IP }}
-      #     username: ubuntukjy
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     port: 2222
-      #     script: |
-      #             # 이건 ssh연결 된 상태에서 실행되는거라 추후에 dockerfile build나 이런거 할 때 여기에 명령어 작성하면 될듯 아래 명령어들은 다 쓰레기임
-      #             echo " ====== "
-      #             echo "start"
-      #             echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r\' > private_key.pem
-      #             chmod 600 private_key.pem
-      #             ls -l private_key.pem
-      #             echo "private_key"
-      #             cat private_key.pem
-      #             scp -o StrictHostKeyChecking=no -i private_key.pem -P 2222 $GITHUB_WORKSPACE/build/libs/*.jar ubuntukjy@${{ secrets.HOST_IP }}:/spring/docker/compose/follow/jar
-      #             echo "end"
+      - name: Set SSH ssh-action
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_IP }}
+          username: ubuntukjy
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 2222
+          script: |
+                  # 이건 ssh연결 된 상태에서 실행되는거라 추후에 dockerfile build나 이런거 할 때 여기에 명령어 작성하면 될듯 아래 명령어들은 다 쓰레기임
+                  echo "CD start"
+                  cd /spring/docker/compose
+                  docker-compose -f docker-compose-follow.yaml down -v
+                  docker-compose -f docker-compose-follow.yaml up -d --build
+                  echo "CD end"
