@@ -35,14 +35,14 @@ public class FollowApi {
 
     @PostMapping("/api/follow")
     public void insertFollow(@RequestBody FollowDto followDto) {
-        followService.insert(followDto);
+        // followService.insert(followDto);
         return;
     }
     
     @DeleteMapping("/api/follow")
     public void deleteFollow(@RequestBody FollowDto followDto)
     {
-        followService.delete(followDto);
+        // followService.delete(followDto);
         return;
     }
 }
