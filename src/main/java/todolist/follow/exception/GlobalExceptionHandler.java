@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 import java.nio.file.AccessDeniedException;
 import java.sql.SQLSyntaxErrorException;
 
-import org.apache.kafka.common.KafkaException;
+// import org.apache.kafka.common.KafkaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,11 +108,11 @@ public class GlobalExceptionHandler {
         logPrinter("NoSuchBeanDefinition Err : ", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("등록되지 않은 빈 참조");
     }
-    @ExceptionHandler(KafkaException.class)
-    public ResponseEntity<String> handleKafkaException(KafkaException ex) {
-        logPrinter("Kafka Err : ", ex);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("카프카 통신에러 발생");
-    }
+    // @ExceptionHandler(KafkaException.class)
+    // public ResponseEntity<String> handleKafkaException(KafkaException ex) {
+    //     logPrinter("Kafka Err : ", ex);
+    //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("카프카 통신에러 발생");
+    // }
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<String> handleHttpClientErrorException(HttpClientErrorException ex) {
         logPrinter("HttpClientError Err : ", ex);
