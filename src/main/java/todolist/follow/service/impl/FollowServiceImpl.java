@@ -80,7 +80,22 @@ public class FollowServiceImpl implements FollowService{
     //     // following_user_id는 number_of_follower, follower_user_id는 number_of_following을 증가시켜야 한다.
     //     ack.acknowledge();
     // }
-
+    @Override
+    public void insert(FollowDto followDto)
+    {
+        Follow insFollow = Follow.builder()
+                                 .following_user_id(followDto.getFollowing_user_id())
+                                 .follower_user_id(followDto.getFollower_user_id())
+                                 .build();
+        repoIns(insFollow);
+        checkFollower(followDto, "INS");
+    }
+    @Override
+    public void delete(FollowDto followDto)
+    {
+        repoDel(followDto);
+        checkFollower(followDto, "DEL");
+    }
     @Transactional(propagation = Propagation.REQUIRED)
     public void checkFollower(FollowDto followDto, String operFlag)
     {
@@ -101,9 +116,9 @@ public class FollowServiceImpl implements FollowService{
     }
 
     @Override 
-    public Map<String, Object> getFollowing(Long user_id)
+    public Map<String, List<Long>> getFollowing(Long user_id)
     {
-        Map<String, Object> followList = new HashMap<>();
+        Map<String, List<Long>> followList = new HashMap<>();
         followList.put("A", followRepository.getFollowing(user_id, 'A'));
         followList.put("F", followRepository.getFollowing(user_id, 'Y'));
         

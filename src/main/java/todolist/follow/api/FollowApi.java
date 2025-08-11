@@ -1,5 +1,6 @@
 package todolist.follow.api;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -26,23 +27,23 @@ public class FollowApi {
     private final FollowService followService;
 
     @GetMapping("/api/follow")
-    public Map<String, Object> getFollow(@RequestParam Long user_id)
+    public Map<String, List<Long>> getFollow(@RequestParam Long user_id)
     {
-        Map<String, Object> followList = followService.getFollowing(user_id);
+        Map<String, List<Long>> followList = followService.getFollowing(user_id);
         
         return followList;
     }
 
     @PostMapping("/api/follow")
     public void insertFollow(@RequestBody FollowDto followDto) {
-        // followService.insert(followDto);
+        followService.insert(followDto);
         return;
     }
     
     @DeleteMapping("/api/follow")
     public void deleteFollow(@RequestBody FollowDto followDto)
     {
-        // followService.delete(followDto);
+        followService.delete(followDto);
         return;
     }
 }

@@ -1,5 +1,6 @@
 package todolist.follow.service;
 
+import java.util.List;
 import java.util.Map;
 
 import todolist.follow.dto.FollowDto;
@@ -8,6 +9,9 @@ public interface FollowService {
 
     // void insert(FollowDto followDto);
     // void delete(FollowDto followDto);
-    Map<String, Object> getFollowing(Long user_id);    // 친구 조회
+
+    void insert(FollowDto followDto);
+    void delete(FollowDto followDto);
+    Map<String, List<Long>> getFollowing(Long user_id);    // 친구 조회
     
 }
