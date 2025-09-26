@@ -37,8 +37,8 @@ public class FollowServiceImplTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private KafkaProducer kafka;
+    // @Autowired
+    // private KafkaProducer kafka;
 
     // @Test
     public void getFollowing()
@@ -56,19 +56,19 @@ public class FollowServiceImplTest {
         log.info("token CreateEnd");
     }
     // @Test
-    public void insertFollow()
-    throws Exception
-    {
-        log.info("테스트 코드 시작");
-        List<Long> arr = java.util.Arrays.asList(7777L, 594201L, 5358L, 113729L, 3729L);
-        for(Long follower_user_id : arr)
-        {
-            FollowDto followDto = new FollowDto();
-            followDto.setFollower_user_id(follower_user_id);
-            followDto.setFollowing_user_id(100L);
-            kafka.sendMessage("follow-insert", (Object) followDto);
-        }
-    }
+    // public void insertFollow()
+    // throws Exception
+    // {
+    //     log.info("테스트 코드 시작");
+    //     List<Long> arr = java.util.Arrays.asList(7777L, 594201L, 5358L, 113729L, 3729L);
+    //     for(Long follower_user_id : arr)
+    //     {
+    //         FollowDto followDto = new FollowDto();
+    //         followDto.setFollower_user_id(follower_user_id);
+    //         followDto.setFollowing_user_id(100L);
+    //         kafka.sendMessage("follow-insert", (Object) followDto);
+    //     }
+    // }
 
     // @Test
     public void deleteFollow()
@@ -84,28 +84,28 @@ public class FollowServiceImplTest {
 
     // kafka Test
     // @Test
-    public void insertFollowing()
-    {
-        String topic = "follow-insert";
-        Long following_user_id = 11L;
-        Long follower_user_id = 22L;
-        FollowDto followDto = new FollowDto();
-        followDto.setFollowing_user_id(following_user_id);
-        followDto.setFollower_user_id(follower_user_id);
+    // public void insertFollowing()
+    // {
+    //     String topic = "follow-insert";
+    //     Long following_user_id = 11L;
+    //     Long follower_user_id = 22L;
+    //     FollowDto followDto = new FollowDto();
+    //     followDto.setFollowing_user_id(following_user_id);
+    //     followDto.setFollower_user_id(follower_user_id);
 
-        kafka.sendMessage(topic, (Object) followDto);
-    }
+    //     kafka.sendMessage(topic, (Object) followDto);
+    // }
 
     // @Test
-    public void deleteFollowing()
-    {
-        String topic = "follow-delete";
-        Long following_user_id = 22L;
-        Long follower_user_id = 11L;
-        FollowDto followDto = new FollowDto();
-        followDto.setFollowing_user_id(following_user_id);
-        followDto.setFollower_user_id(follower_user_id);
+    // public void deleteFollowing()
+    // {
+    //     String topic = "follow-delete";
+    //     Long following_user_id = 22L;
+    //     Long follower_user_id = 11L;
+    //     FollowDto followDto = new FollowDto();
+    //     followDto.setFollowing_user_id(following_user_id);
+    //     followDto.setFollower_user_id(follower_user_id);
 
-        kafka.sendMessage(topic, (Object) followDto);
-    }
+    //     kafka.sendMessage(topic, (Object) followDto);
+    // }
 }
