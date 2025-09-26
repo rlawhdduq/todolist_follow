@@ -1,4 +1,4 @@
-package todolist.follow.api;
+package todolist.follow.api.rest;
 
 import java.util.List;
 import java.util.Map;
@@ -16,32 +16,35 @@ import todolist.follow.dto.FollowDto;
 import todolist.follow.service.FollowService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/rest")
 public class FollowApi {
 
     @Autowired
     private final FollowService followService;
 
-    @GetMapping("/api/follow")
-    public Map<String, List<Long>> getFollow(@RequestParam Long user_id)
+    @RequestMapping(method=RequestMethod.GET)
+    public Map<String, List<Long>> followGetCall(@RequestParam Long user_id)
     {
         Map<String, List<Long>> followList = followService.getFollowing(user_id);
         
         return followList;
     }
 
-    @PostMapping("/api/follow")
-    public void insertFollow(@RequestBody FollowDto followDto) {
+    @RequestMapping(method=RequestMethod.POST)
+    public void followPostCall(@RequestBody FollowDto followDto) {
         followService.insert(followDto);
         return;
     }
     
-    @DeleteMapping("/api/follow")
-    public void deleteFollow(@RequestBody FollowDto followDto)
+    @RequestMapping(method=RequestMethod.DELETE)
+    public void followDeleteCall(@RequestBody FollowDto followDto)
     {
         followService.delete(followDto);
         return;

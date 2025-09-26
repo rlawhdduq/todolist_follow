@@ -81,7 +81,7 @@ public class FollowServiceImpl implements FollowService{
     //     ack.acknowledge();
     // }
     @Override
-    public void insert(FollowDto followDto)
+    public String insert(FollowDto followDto)
     {
         Follow insFollow = Follow.builder()
                                  .following_user_id(followDto.getFollowing_user_id())
@@ -89,12 +89,14 @@ public class FollowServiceImpl implements FollowService{
                                  .build();
         repoIns(insFollow);
         checkFollower(followDto, "INS");
+        return "정상처리되었습니다.";
     }
     @Override
-    public void delete(FollowDto followDto)
+    public String delete(FollowDto followDto)
     {
         repoDel(followDto);
         checkFollower(followDto, "DEL");
+        return "정상처리되었습니다.";
     }
     @Transactional(propagation = Propagation.REQUIRED)
     public void checkFollower(FollowDto followDto, String operFlag)
