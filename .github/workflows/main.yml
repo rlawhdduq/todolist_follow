@@ -3,7 +3,7 @@ name: Build and Deploy Spring Boot Application via SSH
 on:
   push:
     branches:
-      - master  # 타겟 브랜치
+      - kjy  # 타겟 브랜치
        
 jobs:
   build:
