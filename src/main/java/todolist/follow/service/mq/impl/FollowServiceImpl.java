@@ -1,4 +1,4 @@
-package todolist.follow.service.impl;
+package todolist.follow.service.mq.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.kafka.annotation.KafkaListener;
@@ -11,7 +11,7 @@ import todolist.follow.domain.Follow;
 import todolist.follow.dto.FollowDto;
 import todolist.follow.dto.redis.FollowListDto;
 import todolist.follow.repository.FollowRepository;
-import todolist.follow.service.FollowService;
+import todolist.follow.service.mq.FollowService;
 // import todolist.follow.service.KafkaProducer;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Service
+@Service("mqService")
 public class FollowServiceImpl implements FollowService{
     
     private static final Logger log = LoggerFactory.getLogger(FollowServiceImpl.class);
@@ -32,18 +32,18 @@ public class FollowServiceImpl implements FollowService{
     // @Autowired
     // private KafkaProducer kafka;
 
-    // @Override
-    // public void insert(FollowDto followDto)
-    // {
-    //     log.info("FollowService 들어옴");
-    //     callKafka("follow-insert", (Object) followDto);
-    //     log.info("FollowService 나감");
-    // }
-    // @Override
-    // public void delete(FollowDto followDto)
-    // {
-    //     callKafka("follow-delete", (Object) followDto);
-    // }
+    @Override
+    public void insert(FollowDto followDto)
+    {
+        log.info("FollowService 들어옴");
+        // callKafka("follow-insert", (Object) followDto);
+        log.info("FollowService 나감");
+    }
+    @Override
+    public void delete(FollowDto followDto)
+    {
+        // callKafka("follow-delete", (Object) followDto);
+    }
 
     // @KafkaListener
     // (
@@ -80,24 +80,6 @@ public class FollowServiceImpl implements FollowService{
     //     // following_user_id는 number_of_follower, follower_user_id는 number_of_following을 증가시켜야 한다.
     //     ack.acknowledge();
     // }
-    @Override
-    public String insert(FollowDto followDto)
-    {
-        Follow insFollow = Follow.builder()
-                                 .following_user_id(followDto.getFollowing_user_id())
-                                 .follower_user_id(followDto.getFollower_user_id())
-                                 .build();
-        repoIns(insFollow);
-        checkFollower(followDto, "INS");
-        return "정상처리되었습니다.";
-    }
-    @Override
-    public String delete(FollowDto followDto)
-    {
-        repoDel(followDto);
-        checkFollower(followDto, "DEL");
-        return "정상처리되었습니다.";
-    }
     @Transactional(propagation = Propagation.REQUIRED)
     public void checkFollower(FollowDto followDto, String operFlag)
     {
