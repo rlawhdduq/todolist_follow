@@ -32,6 +32,9 @@ jobs:
             ls -al
             echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > private_key.pem
             chmod 600 private_key.pem
+            # 이전 .jar 먼저 삭제
+            ssh -o StrictHostKeyChecking=no -i private_key.pem -p 2222 ubuntukjy@${{ secrets.HOST_IP }} 'rm -f /spring/docker/compose/follow/jar/*.jar'
+            # 새로운 .jar 복사
             scp -o StrictHostKeyChecking=no -i private_key.pem -P 2222 $GITHUB_WORKSPACE/build/libs/*.jar ubuntukjy@${{ secrets.HOST_IP }}:/spring/docker/compose/follow/jar
             
       - name: Set SSH ssh-action
@@ -46,5 +49,9 @@ jobs:
                   echo "CD start"
                   cd /spring/docker/compose
                   docker-compose -f docker-compose-follow.yaml down -v
-                  docker-compose -f docker-compose-follow.yaml up -d --build
+                  # 이미지 강제로 전부 삭제, true는 이미지없어서 오류나도 계속 진행하라는 의미
+                  docker rmi $(docker-compose -f docker-compose-follow.yaml images -q) || true
+
+                  docker-compose -f docker-compose-follow.yaml build --no-cache
+                  docker-compose -f docker-compose-follow.yaml up -d --force-recreate
                   echo "CD end"
