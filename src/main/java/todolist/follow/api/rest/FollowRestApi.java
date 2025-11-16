@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import todolist.follow.dto.FollowDto;
 import todolist.follow.service.rest.FollowService;
+
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -23,8 +24,8 @@ public class FollowRestApi {
     @Autowired
     private final FollowService followService;
 
-    @RequestMapping(method=RequestMethod.GET)
-    public Map<String, List<Long>> followGetCall(@RequestParam Long user_id)
+    @RequestMapping(path="/{user_id}", method=RequestMethod.GET)
+    public Map<String, List<Long>> followGetCall(@PathVariable Long user_id)
     {
         Map<String, List<Long>> followList = followService.getFollowing(user_id);
         
