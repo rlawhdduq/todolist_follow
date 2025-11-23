@@ -33,9 +33,16 @@ public class FollowServiceImpl implements FollowService{
     @Override
     public String insert(FollowDto followDto)
     {
+        char followStatus = 'A';
+        // 상대가 나를 친추했는지 확인해야하니 follower->following, following->follower로 조회한다.
+        if(followRepository.findByFollower(followDto.getFollower_user_id(), followDto.getFollowing_user_id(), 'A'))
+        {
+            followStatus = 'Y';
+        }
         Follow insFollow = Follow.builder()
                                  .following_user_id(followDto.getFollowing_user_id())
                                  .follower_user_id(followDto.getFollower_user_id())
+                                 .follow_status(followStatus)
                                  .build();
         repoIns(insFollow);
         checkFollower(followDto, "INS");
@@ -75,6 +82,13 @@ public class FollowServiceImpl implements FollowService{
         followList.put("F", followRepository.getFollowing(user_id, 'Y'));
         
         return followList;
+    }
+
+    @Override
+    public Boolean followState(Long target_user_id, Long source_user_id)
+    {
+        Boolean followState = followState(target_user_id, source_user_id);
+        return followState;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

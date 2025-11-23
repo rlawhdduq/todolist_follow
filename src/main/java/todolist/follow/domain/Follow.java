@@ -28,7 +28,7 @@ public class Follow {
     @Column(nullable = false)
     private Long follower_user_id;
 
-    @Column(insertable = false, updatable = true)
+    @Column(updatable = true)
     private Character follow_status;
 
     @Column(insertable = false, updatable = false)

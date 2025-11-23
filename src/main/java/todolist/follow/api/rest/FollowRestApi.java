@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -43,5 +44,12 @@ public class FollowRestApi {
     {
         followService.delete(followDto);
         return;
+    }
+
+    @RequestMapping(path="/state", method=RequestMethod.GET)
+    public Boolean followState(@RequestParam("target") Long target_user_id, @RequestParam("source") Long source_user_id)
+    {
+        Boolean followState = followService.followState(target_user_id, source_user_id);
+        return followState;
     }
 }
