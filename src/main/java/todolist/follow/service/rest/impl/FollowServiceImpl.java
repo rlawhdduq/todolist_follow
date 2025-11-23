@@ -87,7 +87,7 @@ public class FollowServiceImpl implements FollowService{
     @Override
     public Boolean followState(Long target_user_id, Long source_user_id)
     {
-        Boolean followState = followState(target_user_id, source_user_id);
+        Boolean followState = followRepository.followState(target_user_id, source_user_id);
         return followState;
     }
 
